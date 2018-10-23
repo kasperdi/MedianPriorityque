@@ -4,22 +4,22 @@ import java.util.*;
 
 public class Median {
     // Add your private fields here
-    private PriorityQueue<Integer> minHeap = new PriorityQueue<>();
-    private PriorityQueue<Integer> maxHeap = new PriorityQueue<>(11, Collections.reverseOrder());
-    private int median;
+    private PriorityQueue<Integer> loHeap = new PriorityQueue<>(11, Collections.reverseOrder());
+    private PriorityQueue<Integer> hiHeap = new PriorityQueue<>();
+
     public void add(int x) {
-        minHeap.offer(x);
+        loHeap.offer(x);
+        if(loHeap.size() > hiHeap.size()){
+            hiHeap.offer(loHeap.poll());
+        }
         
-        while(minHeap.size() > maxHeap.size())
-        {
-            maxHeap.offer(minHeap.poll());
+        if ((hiHeap.size() != 0 && loHeap.size() != 0) && hiHeap.peek() < loHeap.peek()){
+            hiHeap.offer(loHeap.poll());
+            loHeap.offer(hiHeap.poll());
         }
     }
-
+    
     public int median() {
-        
-        
-        
-        return minHeap.peek();
+        return hiHeap.peek();
     }
 }
